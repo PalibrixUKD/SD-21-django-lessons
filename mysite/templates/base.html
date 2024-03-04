@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+    {% include 'mixins/header.html' with title='My Page Title' %}
+    {% block content %}
+    {% endblock %}
+    <footer>
+        <p>Hello, it's footer</p>
+    </footer>
+</body>
+</html>

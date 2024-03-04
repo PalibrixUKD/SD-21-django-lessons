@@ -1,13 +1,31 @@
 import asyncio
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
 from django.views import View
+
+from .models import Question
 
 
 def index(request):
-    name = request.GET.get('name', 'world')
-    return HttpResponse(f"Hello, {name}. You're at the polls")
+    # latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    all_questions = Question.objects.all()
+    context = {"latest_question_list": all_questions}
+    return render(request, "polls/index.html", context)
 
+
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, "polls/detail.html", {"question": question})
+
+
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
+
+
+def vote(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)
 
 class IndexView(View):
     async def get(self, request):
